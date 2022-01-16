@@ -1,0 +1,29 @@
+﻿@using Db.Models;
+@model IEnumerable<Exam>
+
+<h1>ACTIVE EXAMS</h1>
+
+<table class="table table-hover table-striped table-dark">
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Index</th>
+        <th>Exam name</th>
+        <th>Profesor name</th>
+        <th>Date</th>
+        <th>Period</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Index</td>
+            <td>@item.ExamName</td>
+            <td>@item.ProfesorName</td>
+            <td>@item.Date&nbsp;@item.Time</td>
+            <td>@item.ExamPeriod</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StartupServicesManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="ExamRegistration.RegisterByMail_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ExamRegistration.RegisterByMail_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ExamRegistration.RegisterByMail_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ExamRegistration.Archive_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ExamRegistration.Archive_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ExamRegistration.Archive_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ExamRegistration.RegisterByApp_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ExamRegistration.Web_InstanceCount" DefaultValue="-1" />
+  </Parameters>
+  <Services>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="ExamRegistration.RegisterByMail" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ExamRegistration.RegisterByMailType" TargetReplicaSetSize="[ExamRegistration.RegisterByMail_TargetReplicaSetSize]" MinReplicaSetSize="[ExamRegistration.RegisterByMail_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ExamRegistration.RegisterByMail_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ExamRegistration.Archive" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ExamRegistration.ArchiveType" TargetReplicaSetSize="[ExamRegistration.Archive_TargetReplicaSetSize]" MinReplicaSetSize="[ExamRegistration.Archive_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ExamRegistration.Archive_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ExamRegistration.RegisterByApp" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="ExamRegistration.RegisterByAppType" InstanceCount="[ExamRegistration.RegisterByApp_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="ExamRegistration.Web" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="ExamRegistration.WebType" InstanceCount="[ExamRegistration.Web_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </Services>
+</StartupServicesManifest>
