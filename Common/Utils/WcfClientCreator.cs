@@ -37,6 +37,7 @@ namespace Common.Utils
                     new ServicePartitionKey(0));
                 return servicePartitionClient;
             }
+            
       
             return null;
         }

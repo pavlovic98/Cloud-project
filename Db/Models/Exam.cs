@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Db.Models
 {
@@ -6,6 +7,7 @@ namespace Db.Models
     public class Exam
     {
         [DataMember]
+        
         public int Id { get; set; }
         [DataMember]
         public string ExamPeriod { get; set; }

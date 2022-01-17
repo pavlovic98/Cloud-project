@@ -29,12 +29,12 @@
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
       <Endpoint Name="ServiceEndpoint" />
+	  <Endpoint Name="RegisterByMailEndpoint" Protocol="tcp" Port="46010" Type="Input"/>
 
-      <!-- This endpoint is used by the replicator for replicating the state of your service.
+		<!-- This endpoint is used by the replicator for replicating the state of your service.
            This endpoint is configured through a ReplicatorSettings config section in the Settings.xml
            file under the ConfigPackage. -->
       <Endpoint Name="ReplicatorEndpoint" />
-	  <Endpoint Name="RegisterByMailEndpoint" Protocol="tcp" Port="46003" Type="Input"/>
-    </Endpoints>
+	 </Endpoints>
   </Resources>
 </ServiceManifest>

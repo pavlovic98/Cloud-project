@@ -65,6 +65,12 @@ namespace ExamRegistration.RegisterByApp
 
             long iterations = 0;
 
+
+            //Thread t = new Thread(() => Metoda());
+            //t.IsBackground = true;
+            //t.Start();
+
+
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();

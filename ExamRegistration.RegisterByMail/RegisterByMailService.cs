@@ -4,6 +4,7 @@ using Db.Models;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ExamRegistration.RegisterByMail
 {
@@ -16,6 +17,9 @@ namespace ExamRegistration.RegisterByMail
             
         }
 
-        
+        public async Task Get()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
