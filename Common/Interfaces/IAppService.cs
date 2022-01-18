@@ -9,6 +9,11 @@ namespace Common.Interfaces
     public interface IAppService
     {
         [OperationContract]
-        Task AddExam(Exam exam); 
+        Task AddExam(Exam exam);
+
+        [OperationContract]
+        Task GetExams(bool active);
+
+
     }
 }

@@ -17,5 +17,13 @@ namespace ExamRegistration.RegisterByApp
             await wcfClient.InvokeWithRetryAsync(client => client.Channel.AddExam(exam));
 
         }
+
+        public async Task GetExams(bool active)
+        {
+            var wcfClient = (ServicePartitionClient<WcfCommunicationClient<IArchiveService>>)(
+                await WcfClientCreator.Create("fabric:/ExamRegistration/ExamRegistration.Archive", Protocol.TCP, "IArchiveService"));
+
+            await wcfClient.InvokeWithRetryAsync(client => client.Channel.GetExams(active));
+        }
     }
 }

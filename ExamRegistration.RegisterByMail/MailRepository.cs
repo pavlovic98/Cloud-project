@@ -42,7 +42,7 @@ namespace ExamRegistration.RegisterByMail
 
                 // The Inbox folder is always available on all IMAP servers...
                 var inbox = client.Inbox;
-                inbox.Open(FolderAccess.ReadOnly);
+                inbox.Open(FolderAccess.ReadWrite);
                 var results = inbox.Search(SearchOptions.All, SearchQuery.NotSeen);
                 foreach (var uniqueId in results.UniqueIds)
                 {
@@ -50,8 +50,8 @@ namespace ExamRegistration.RegisterByMail
 
                     messages.Add(new Tuple<string, string>(message.Subject, message.TextBody));
 
-                    //Mark message as read
-                    //inbox.AddFlags(uniqueId, MessageFlags.Seen, true);
+                    
+                    inbox.AddFlags(uniqueId, MessageFlags.Seen, true);
                 }
 
                 client.Disconnect(true);

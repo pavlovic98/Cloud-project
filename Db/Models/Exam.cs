@@ -6,7 +6,7 @@ namespace Db.Models
     public class Exam 
     {
         [DataMember]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [DataMember]
         public string ExamPeriod { get; set; }
         [DataMember]

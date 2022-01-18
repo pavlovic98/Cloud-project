@@ -32,8 +32,8 @@ namespace ExamRegistration.RegisterByMail
         public RegisterByMail(StatefulServiceContext context)
             : base(context)
         {
-            _mailService = new RegisterByMailService(this.StateManager);
             _mailRepository = new MailRepository("imap.gmail.com", 993, true, _email, _password);
+            _mailService = new RegisterByMailService(this.StateManager, _mailRepository);
         }
 
         /// <summary>
@@ -102,47 +102,12 @@ namespace ExamRegistration.RegisterByMail
                     await tx.CommitAsync();
                 }
 
-                await GetMails(exams);
+                await _mailService.GetMails(exams);
                 await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
             }
 
         }
 
-        private async Task GetMails(IReliableDictionary<string, Exam> exams)
-        {
-            var allEmails = _mailRepository.GetAllMails();
-            foreach (var item in allEmails)
-            {
-                string[] data = item.Item2.Replace("\n", "").Replace("\r", "").Split(',');
-                Exam exam = new Exam
-                {
-                    FirstName = data[0],
-                    LastName = data[1],
-                    Index = data[2],
-                    ExamName = data[3],
-                    ProfesorName = data[4],
-                    Date = data[5],
-                    Time = data[6],
-                    ExamPeriod = data[7]
-                };
-
-                using (var tx = this.StateManager.CreateTransaction())
-                {
-                    Exam exist = (await exams.TryGetValueAsync(tx, item.Item1)).Value;
-                    if (exist == null)
-                    {
-                        await exams.TryAddAsync(tx, item.Item1, exam);
-                        await tx.CommitAsync();
-                        var wcfClient = (ServicePartitionClient<WcfCommunicationClient<IArchiveService>>)(
-                        await WcfClientCreator.Create("fabric:/ExamRegistration/ExamRegistration.Archive", Protocol.TCP, "IArchiveService"));
-
-                        await wcfClient.InvokeWithRetryAsync(client => client.Channel.AddExam(exam));
-                    }
-
-                }
-            }
-
-
-        }
+        
     }
 }

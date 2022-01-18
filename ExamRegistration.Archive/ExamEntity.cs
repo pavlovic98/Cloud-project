@@ -20,10 +20,10 @@ namespace ExamRegistration.Archive
         public string Time { get; set; }
         public bool Archived { get; set; }
 
-        public ExamEntity(int id)
+        public ExamEntity(string id)
         {
             PartitionKey = "Exam";
-            RowKey = id.ToString();
+            RowKey = id;
             Archived = false;
         }
         public ExamEntity()

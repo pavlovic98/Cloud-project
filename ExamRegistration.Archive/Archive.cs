@@ -1,4 +1,5 @@
 ﻿using Common.Interfaces;
+using Db.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
@@ -24,19 +25,13 @@ namespace ExamRegistration.Archive
     internal sealed class Archive : StatefulService
     {
         private ArchiveService _archiveService;
-        private CloudStorageAccount _cloudStorageAccount = null;
-        private CloudTable _cloudTable = null;
+        private DataRepository _dataRepository;
         
         public Archive(StatefulServiceContext context)
             : base(context)
         {
-            _cloudStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["ConnectionString"]);
-            CloudTableClient cloudTableClient = new CloudTableClient(new Uri(_cloudStorageAccount.TableEndpoint.AbsoluteUri), _cloudStorageAccount.Credentials);
-            _cloudTable = cloudTableClient.GetTableReference("Exams");
-            _cloudTable.CreateIfNotExists();
-            _archiveService = new ArchiveService(this.StateManager, _cloudTable);
-
-
+            _dataRepository = new DataRepository();
+            _archiveService = new ArchiveService(this.StateManager, _dataRepository);
         }
 
         /// <summary>
@@ -85,6 +80,25 @@ namespace ExamRegistration.Archive
             //       or remove this RunAsync override if it's not needed in your service.
 
             var myDictionary = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, long>>("myDictionary");
+            var exams = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, Exam>>("exams");
+            var archivedExams = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, Exam>>("archivedExams");
+
+            var retExams = await _dataRepository.RetrieveAll();
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                foreach (var item in retExams)
+                {
+                    if (!item.Archived)
+                    {
+                        await exams.AddAsync(tx, item.Id,item);
+                    }
+                    else
+                    {
+                        await archivedExams.AddAsync(tx, item.Id, item);
+                    }
+                }
+                await tx.CommitAsync();
+            }
 
             while (true)
             {
@@ -103,8 +117,8 @@ namespace ExamRegistration.Archive
                     // discarded, and nothing is saved to the secondary replicas.
                     await tx.CommitAsync();
                 }
-
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                await _archiveService.CheckExams(exams,archivedExams);
+                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
             }
         }
     }

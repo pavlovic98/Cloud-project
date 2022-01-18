@@ -9,5 +9,8 @@ namespace Common.Interfaces
     {
         [OperationContract]
         Task AddExam(Exam exam);
+        [OperationContract]
+        Task GetExams(bool active);
+
     }
 }
