@@ -277,6 +277,7 @@ C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\w
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Common.pdb
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Common.dll.config
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Db.pdb
+C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Db.dll.config
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Microsoft.ServiceFabric.Services.Wcf.xml
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Microsoft.ServiceFabric.Services.Remoting.xml
 C:\Users\Mladen\Desktop\ExamRegistration\ExamRegistration.Web\obj\Debug\net461\win7-x64\PubTmp\Out\Microsoft.ServiceFabric.FabricTransport.V2.xml

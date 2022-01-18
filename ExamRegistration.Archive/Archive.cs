@@ -4,8 +4,11 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
 using Microsoft.ServiceFabric.Services.Communication.Wcf.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Fabric;
 using System.Globalization;
 using System.Linq;
@@ -21,10 +24,19 @@ namespace ExamRegistration.Archive
     internal sealed class Archive : StatefulService
     {
         private ArchiveService _archiveService;
+        private CloudStorageAccount _cloudStorageAccount = null;
+        private CloudTable _cloudTable = null;
+        
         public Archive(StatefulServiceContext context)
             : base(context)
         {
-            _archiveService = new ArchiveService(this.StateManager);
+            _cloudStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["ConnectionString"]);
+            CloudTableClient cloudTableClient = new CloudTableClient(new Uri(_cloudStorageAccount.TableEndpoint.AbsoluteUri), _cloudStorageAccount.Credentials);
+            _cloudTable = cloudTableClient.GetTableReference("Exams");
+            _cloudTable.CreateIfNotExists();
+            _archiveService = new ArchiveService(this.StateManager, _cloudTable);
+
+
         }
 
         /// <summary>

@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Db.Models
 {
     [DataContract]
-    public class Exam
+    public class Exam 
     {
         [DataMember]
-        
         public int Id { get; set; }
         [DataMember]
         public string ExamPeriod { get; set; }

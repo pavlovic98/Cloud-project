@@ -1,6 +1,0 @@
-C:\Users\Mladen\Desktop\ExamRegistration\Db\bin\Debug\Db.dll
-C:\Users\Mladen\Desktop\ExamRegistration\Db\bin\Debug\Db.pdb
-C:\Users\Mladen\Desktop\ExamRegistration\Db\obj\Debug\Db.csproj.CoreCompileInputs.cache
-C:\Users\Mladen\Desktop\ExamRegistration\Db\obj\Debug\Db.dll
-C:\Users\Mladen\Desktop\ExamRegistration\Db\obj\Debug\Db.pdb
-C:\Users\Mladen\Desktop\ExamRegistration\Db\obj\Debug\Db.csproj.AssemblyReference.cache

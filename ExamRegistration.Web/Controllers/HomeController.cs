@@ -4,10 +4,7 @@ using ExamRegistration.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceModel;
-using System.Threading.Tasks;
 
 namespace ExamRegistration.Web.Controllers
 {
@@ -18,9 +15,11 @@ namespace ExamRegistration.Web.Controllers
         public static List<Exam> ArchivedExams = new List<Exam>();
         
         public IActionResult Index()
-        {      
+        {
+            
             return View();
         }
+        
         
         [HttpPost]
         [Route("Home/Publish")]
