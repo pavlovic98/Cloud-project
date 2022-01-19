@@ -56,7 +56,7 @@ namespace ExamRegistration.RegisterByMail
                             await exams.TryAddAsync(tx, item.Item1, exam);
                             await tx.CommitAsync();
                             var wcfClient = (ServicePartitionClient<WcfCommunicationClient<IArchiveService>>)(
-                            await WcfClientCreator.Create("fabric:/ExamRegistration/ExamRegistration.Archive", Protocol.TCP, "IArchiveService"));
+                            await WcfClientCreator.Create("fabric:/ExamRegistration/ExamRegistration.Archive", Protocol.TCP, "IArchiveService",1));
 
                             await wcfClient.InvokeWithRetryAsync(client => client.Channel.AddExam(exam));
                         }

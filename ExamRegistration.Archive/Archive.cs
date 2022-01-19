@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Fabric;
+using System.Fabric.Description;
 using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
@@ -51,7 +52,7 @@ namespace ExamRegistration.Archive
 
         private ICommunicationListener CreateServiceInstanceListeners(StatefulServiceContext context)
         {
-            string host = context.NodeContext.IPAddressOrFQDN;
+            /*string host = context.NodeContext.IPAddressOrFQDN;
             var endpointConfig = context.CodePackageActivationContext.GetEndpoint("ArchiveEndpoint");
             int port = endpointConfig.Port;
             var scheme = endpointConfig.Protocol.ToString();
@@ -66,7 +67,21 @@ namespace ExamRegistration.Archive
 
             ServiceEventSource.Current.Message("Napravljen listener!");
 
-            return listener;
+            return listener;*/
+            EndpointResourceDescription internalEndpoint = context.CodePackageActivationContext.GetEndpoint("ArchiveEndpoint");
+            string uriPrefix = String.Format(
+                   "{0}://+:{1}/{2}/{3}-{4}/",
+                   internalEndpoint.Protocol,
+                   internalEndpoint.Port,
+                   context.PartitionId,
+                   context.ReplicaOrInstanceId,
+                   Guid.NewGuid());
+
+            string nodeIP = FabricRuntime.GetNodeContext().IPAddressOrFQDN;
+
+            string uriPublished = uriPrefix.Replace("+", nodeIP);
+            //return new HttpCommunicationListener(uriPrefix, uriPublished, this.ProcessInternalRequest);
+            return new WcfCommunicationListener<IArchiveService>(context, _archiveService, WcfUtility.CreateTcpListenerBinding(maxMessageSize: 1024 * 1024 * 1024), uriPrefix);
         }
 
         /// <summary>

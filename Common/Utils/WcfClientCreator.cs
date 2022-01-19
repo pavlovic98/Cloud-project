@@ -18,7 +18,7 @@ namespace Common.Utils
     }
     public class WcfClientCreator
     {
-        public async static Task<Object> Create(string address, Protocol protocol, string contract)
+        public async static Task<Object> Create(string address, Protocol protocol, string contract, int partition)
         {
             FabricClient fabricClient = new FabricClient();
             int partiotionNumber = (await fabricClient.QueryManager.GetPartitionListAsync(new Uri(address))).Count;
@@ -34,7 +34,7 @@ namespace Common.Utils
                 servicePartitionClient = new ServicePartitionClient<WcfCommunicationClient<IArchiveService>>(
                     new WcfCommunicationClientFactory<IArchiveService>(clientBinding: binding),
                     new Uri(address),
-                    new ServicePartitionKey(0));
+                    new ServicePartitionKey(partition));
                 return servicePartitionClient;
             }
             
